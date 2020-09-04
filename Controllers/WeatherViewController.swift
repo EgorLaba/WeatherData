@@ -2,7 +2,7 @@
 import UIKit
 import CoreLocation
 
-class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate {
+class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     // MARK: - Outlets
     
@@ -11,9 +11,7 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
     // MARK: - Properties
     
     var currentWeather: CurrentWeather?
-    
-    let locationManager = CLLocationManager()
-    
+        
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -22,27 +20,21 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
         tableView.delegate = self
         tableView.dataSource = self
         
-        setupLocation()
-    }
-    
-    // MARK: - Functions
-    
-    func setupLocation() {
-        locationManager.delegate = self
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.first else {
-            return
+        LocationManager.shared.start { currentLocation in
+            let longitude = currentLocation.coordinate.longitude
+            let latitude = currentLocation.coordinate.latitude
+            LocationManager.shared.stop()
+            
+            self.loadCurrentWeather(longitude, latitude)
+            //self.loadHourlyWeather()
+            //self.loadDaylyWeather()
+            
         }
-        let longitude = location.coordinate.longitude
-        let latitude = location.coordinate.latitude
-        
-        locationManager.stopUpdatingLocation()
-        
+    }
+    
+    // MARK: - Private methods
+    
+    private func loadCurrentWeather(_ longitude: Double, _ latitude: Double) {
         Networking.shared.getCurrentWeather(
             longitude: longitude,
             latitude: latitude,

@@ -13,8 +13,8 @@
 		742CF74C24FFE56A00447D38 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 742CF74B24FFE56A00447D38 /* Assets.xcassets */; };
 		742CF74F24FFE56A00447D38 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 742CF74D24FFE56A00447D38 /* LaunchScreen.storyboard */; };
 		742CF75724FFEC7B00447D38 /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742CF75624FFEC7B00447D38 /* WeatherViewController.swift */; };
-		742CF75D24FFEEA900447D38 /* CurrentWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742CF75C24FFEEA900447D38 /* CurrentWeather.swift */; };
-		742CF76024FFEFB400447D38 /* WeatherCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742CF75F24FFEFB400447D38 /* WeatherCell.swift */; };
+		742CF75D24FFEEA900447D38 /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742CF75C24FFEEA900447D38 /* Weather.swift */; };
+		742CF76024FFEFB400447D38 /* DailyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742CF75F24FFEFB400447D38 /* DailyCell.swift */; };
 		7475D8BE2502BC890056A395 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7475D8BD2502BC890056A395 /* LocationManager.swift */; };
 		74805A642502882E00B84D9D /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74805A632502882E00B84D9D /* Networking.swift */; };
 /* End PBXBuildFile section */
@@ -28,8 +28,8 @@
 		742CF74E24FFE56A00447D38 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		742CF75024FFE56A00447D38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		742CF75624FFEC7B00447D38 /* WeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewController.swift; sourceTree = "<group>"; };
-		742CF75C24FFEEA900447D38 /* CurrentWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeather.swift; sourceTree = "<group>"; };
-		742CF75F24FFEFB400447D38 /* WeatherCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherCell.swift; sourceTree = "<group>"; };
+		742CF75C24FFEEA900447D38 /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
+		742CF75F24FFEFB400447D38 /* DailyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCell.swift; sourceTree = "<group>"; };
 		7475D8BD2502BC890056A395 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		74805A632502882E00B84D9D /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -98,7 +98,7 @@
 		742CF75B24FFEE9000447D38 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				742CF75C24FFEEA900447D38 /* CurrentWeather.swift */,
+				742CF75C24FFEEA900447D38 /* Weather.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -106,7 +106,7 @@
 		742CF75E24FFEF4200447D38 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				742CF75F24FFEFB400447D38 /* WeatherCell.swift */,
+				742CF75F24FFEFB400447D38 /* DailyCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -198,9 +198,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				742CF75D24FFEEA900447D38 /* CurrentWeather.swift in Sources */,
+				742CF75D24FFEEA900447D38 /* Weather.swift in Sources */,
 				742CF74324FFE56800447D38 /* AppDelegate.swift in Sources */,
-				742CF76024FFEFB400447D38 /* WeatherCell.swift in Sources */,
+				742CF76024FFEFB400447D38 /* DailyCell.swift in Sources */,
 				7475D8BE2502BC890056A395 /* LocationManager.swift in Sources */,
 				74805A642502882E00B84D9D /* Networking.swift in Sources */,
 				742CF75724FFEC7B00447D38 /* WeatherViewController.swift in Sources */,

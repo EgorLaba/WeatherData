@@ -5,8 +5,8 @@ import CoreLocation
 class LocationManager: NSObject, CLLocationManagerDelegate {
     
     static let shared = LocationManager()
-    let locationManager : CLLocationManager
-    var currentLocationCallBack: (_ currentLocation: CLLocation) -> () = { currentLocation in }
+    let locationManager: CLLocationManager
+    var currentLocationCallBack: (_ currentLocation: CLLocation, _ city: String) -> () = { currentLocation, city in }
     
     override init() {
         locationManager = CLLocationManager()
@@ -16,7 +16,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         locationManager.delegate = self
     }
     
-    func start(currentLocationCallBack: @escaping ((_ currentLocation: CLLocation) -> (Void))) {
+    func start(currentLocationCallBack: @escaping ((_ currentLocation: CLLocation, _ city: String) -> (Void))) {
         self.currentLocationCallBack = currentLocationCallBack
         locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation()
@@ -30,7 +30,12 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         guard let mostRecentLocation = locations.last else {
             return
         }
-        self.currentLocationCallBack(mostRecentLocation)
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(mostRecentLocation) { (placemarks, error) in
+            guard let placemarks = placemarks, let placemark = placemarks.first else { return }
+            if let city = placemark.locality {
+                self.currentLocationCallBack(mostRecentLocation, city)
+            }
+        }
     }
 }
-

@@ -2,15 +2,16 @@
 
 import UIKit
 
-class WeatherCell: UITableViewCell {
+class DailyCell: UITableViewCell {
     
-    // MARK: - Lifecycle
+    // MARK: - Outlets
     
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     
+    // MARK: - Lifecycle
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        
     }
 }

@@ -33,9 +33,6 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
         LocationManager.shared.start { (currentLocation, city) in
             let longitude = currentLocation.coordinate.longitude
             let latitude = currentLocation.coordinate.latitude
-            print(currentLocation.coordinate.latitude)
-            print(currentLocation.coordinate.longitude)
-
             self.city = city
             LocationManager.shared.stop()
             
@@ -81,15 +78,20 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     // MARK: - TableView
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return 1
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "DailyCell", for: indexPath) as! DailyCell
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CurrentCell", for: indexPath) as! CurrentCell
+        if let nightTemperature = self.weather?.daily[indexPath.row].temp.night, let dayTemperature = self.weather?.daily[indexPath.row].temp.day {
+            cell.nightTemperature.text = String(Int(nightTemperature))
+            cell.dayTemperature.text = String(Int(dayTemperature))
+            cell.day.text = Date().dayOfWeek()
+        }
         return cell
+        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

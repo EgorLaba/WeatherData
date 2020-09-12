@@ -21,6 +21,7 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     var weather: Weather?
     var city: String?
+    
         
     // MARK: - Lifecycle
     
@@ -80,21 +81,46 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
     // MARK: - TableView
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return 3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CurrentCell", for: indexPath) as! CurrentCell
-        if let nightTemperature = self.weather?.daily[indexPath.row].temp.night, let dayTemperature = self.weather?.daily[indexPath.row].temp.day {
-            cell.nightTemperature.text = String(Int(nightTemperature))
-            cell.dayTemperature.text = String(Int(dayTemperature))
-            cell.day.text = Date().dayOfWeek()
+        if indexPath.row == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "CurrentCell", for: indexPath) as! CurrentCell
+            if let nightTemperature = self.weather?.daily[indexPath.row].temp.night, let dayTemperature = self.weather?.daily[indexPath.row].temp.day, let currentDay = weather?.daily[indexPath.row].dt  {
+                cell.nightTemperature.text = String(Int(nightTemperature))
+                cell.dayTemperature.text = String(Int(dayTemperature))
+                cell.day.text = Date.dayOfWeek(currentDay)
+                return cell
+            }
+        } else if indexPath.row == 1 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "HourlyWeatherCell", for: indexPath) as! HourlyWeatherCell
+            if let hourlyWeather =  weather?.hourly {
+                cell.hourlyWeatherData = hourlyWeather
+                cell.hourlyWeatherCollectionView.reloadData()
+            }
+            return cell
+            
+        } else if indexPath.row == 2 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "DailyCell", for: indexPath) as! DailyCell
+            if let dayTemp = self.weather?.daily[indexPath.row].temp.day, let nightTemp = self.weather?.daily[indexPath.row].temp.night, let day = weather?.daily[indexPath.row].dt {
+                cell.dayTemp.text = String(Int(dayTemp))
+                cell.nightTemp.text = String(Int(dayTemp))
+                cell.today.text = Date.dayOfWeek(day)
+            }
+            return cell
         }
-        return cell
-        
+        return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
+        var height : CGFloat
+        if indexPath.row == 1 {
+            height = 120.0
+        } else{
+            height = 50.0
+        }
+        return height
     }
 }
+

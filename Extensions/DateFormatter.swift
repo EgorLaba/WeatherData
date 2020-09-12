@@ -2,15 +2,15 @@
 import UIKit
 
 extension Date {
-    static func dayOfWeek(_ dt: Date) -> String? {
+    func dayOfWeek() -> String? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "EEEE"
-        return dateFormatter.string(from: dt).capitalized
+        return dateFormatter.string(from: self).capitalized
     }
     
-    static func hourlyData(_ dt: Date) -> String? {
+    func hourlyData() -> String? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "h a"
-        return dateFormatter.string(from: dt)
+        return dateFormatter.string(from: self)
     }
 }

@@ -87,10 +87,10 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "CurrentCell", for: indexPath) as! CurrentCell
-            if let nightTemperature = self.weather?.daily[indexPath.row].temp.night, let dayTemperature = self.weather?.daily[indexPath.row].temp.day, let currentDay = weather?.daily[indexPath.row].dt  {
+            if let nightTemperature = self.weather?.daily[0].temp.night, let dayTemperature = self.weather?.daily[0].temp.day, let currentDay = weather?.daily[0].dt  {
                 cell.nightTemperature.text = String(Int(nightTemperature))
                 cell.dayTemperature.text = String(Int(dayTemperature))
-                cell.day.text = Date.dayOfWeek(currentDay)
+                cell.day.text = currentDay.dayOfWeek()
                 return cell
             }
         } else if indexPath.row == 1 {
@@ -106,7 +106,7 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
             if let dayTemp = self.weather?.daily[indexPath.row].temp.day, let nightTemp = self.weather?.daily[indexPath.row].temp.night, let day = weather?.daily[indexPath.row].dt {
                 cell.dayTemp.text = String(Int(dayTemp))
                 cell.nightTemp.text = String(Int(dayTemp))
-                cell.today.text = Date.dayOfWeek(day)
+                cell.today.text = day.dayOfWeek()
             }
             return cell
         }

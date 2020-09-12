@@ -31,9 +31,9 @@ class HourlyWeatherCell: UITableViewCell, UICollectionViewDataSource, UICollecti
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HourlyDetailCollectionCell", for: indexPath) as! HourlyDetailCollectionCell
         let hourlyWeather = hourlyWeatherData[indexPath.row].temp
         cell.weatherTemp.text = String(Int(hourlyWeather)) + degrees
-//        cell.weatherIcons.image = UIImage(named: hourlyWeatherData[indexPath.row].weather[indexPath.row].icon)
+        cell.weatherIcons.image = UIImage(named: hourlyWeatherData[indexPath.row].weather[0].icon)
         if let hour = hourlyWeatherData[indexPath.row].dt {
-            cell.hour.text = Date.hourlyData(hour)
+            cell.hour.text = hour.hourlyData()
         }
         return cell
     }

@@ -33,6 +33,7 @@ class Networking {
                 if let data = data {
                     do {
                         let decoder = JSONDecoder()
+                        decoder.dateDecodingStrategy = .secondsSince1970
                         let response = try decoder.decode(Weather.self, from: data)
                         okHandler(response)
                     } catch {

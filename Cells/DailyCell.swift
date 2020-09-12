@@ -7,7 +7,7 @@ class DailyCell: UITableViewCell {
     @IBOutlet weak var today: UILabel!
     @IBOutlet weak var dayTemp: UILabel!
     @IBOutlet weak var nightTemp: UILabel!
-    @IBOutlet weak var weatherIcons: UIImageView!
+    @IBOutlet weak var dailyIcon: UIImageView!
     
     
     // MARK: Lifecycle

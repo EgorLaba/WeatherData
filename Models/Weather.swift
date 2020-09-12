@@ -33,6 +33,7 @@ struct Daily: Codable {
     var sunrise: Date
     var sunset: Date
     var temp: Temp
+    var weather: [WeatherDescription]
 }
 
 struct Temp: Codable {

@@ -21,6 +21,7 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     var weather: Weather?
     var city: String?
+    var daily: [Daily] = []
     
         
     // MARK: - Lifecycle
@@ -47,6 +48,7 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
             latitude: latitude,
             okHandler: { [weak self] model in
                 self?.weather = model
+                self?.daily = model.daily
                 DispatchQueue.main.async {
                     self?.updateUI()
                 }
@@ -81,7 +83,7 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
     // MARK: - TableView
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return daily.count + 2
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -101,15 +103,16 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
             return cell
             
-        } else if indexPath.row == 2 {
+        } else if (2...9).contains(indexPath.row) {
             let cell = tableView.dequeueReusableCell(withIdentifier: "DailyCell", for: indexPath) as! DailyCell
-            if let dayTemp = self.weather?.daily[indexPath.row].temp.day, let nightTemp = self.weather?.daily[indexPath.row].temp.night, let day = weather?.daily[indexPath.row].dt {
-                cell.dayTemp.text = String(Int(dayTemp))
-                cell.nightTemp.text = String(Int(dayTemp))
-                cell.today.text = day.dayOfWeek()
-            }
+            cell.dayTemp.text = String(Int(daily[indexPath.row - 2].temp.day))
+            cell.nightTemp.text = String(Int(daily[indexPath.row - 2].temp.night))
+            cell.today.text = daily[indexPath.row - 2].dt.dayOfWeek()
+            cell.dailyIcon.image = UIImage(named: daily[indexPath.row - 2].weather[0].icon)
             return cell
+            
         }
+        
         return UITableViewCell()
     }
     

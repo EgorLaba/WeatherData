@@ -1,11 +1,7 @@
 
 import UIKit
 
-class HourlyWeatherCell: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
-    
-    // MARK: - Outlets
-    
-    @IBOutlet weak var hourlyWeatherCollectionView: UICollectionView!
+class HourlyWeatherCollectionView: UICollectionView, UICollectionViewDataSource, UICollectionViewDelegate {
     
     // MARK: - Properties
     
@@ -17,8 +13,8 @@ class HourlyWeatherCell: UITableViewCell, UICollectionViewDataSource, UICollecti
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        hourlyWeatherCollectionView.delegate = self
-        hourlyWeatherCollectionView.dataSource = self
+        delegate = self
+        dataSource = self
     }
     
     // MARK: - Collection
@@ -28,7 +24,7 @@ class HourlyWeatherCell: UITableViewCell, UICollectionViewDataSource, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HourlyDetailCollectionCell", for: indexPath) as! HourlyDetailCollectionCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HourlyWeatherCell", for: indexPath) as! HourlyWeatherCell
         let hourlyWeather = hourlyWeatherData[indexPath.row].temp
         cell.weatherTemp.text = String(Int(hourlyWeather)) + degrees
         cell.hourlyIcon.image = UIImage(named: hourlyWeatherData[indexPath.row].weather[0].icon)
@@ -38,3 +34,4 @@ class HourlyWeatherCell: UITableViewCell, UICollectionViewDataSource, UICollecti
         return cell
     }
 }
+

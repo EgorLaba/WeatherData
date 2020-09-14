@@ -39,4 +39,5 @@ struct Daily: Codable {
 struct Temp: Codable {
     var day: Double
     var night: Double
+    var max: Double
 }

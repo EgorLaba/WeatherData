@@ -2,35 +2,36 @@
 import UIKit
 import CoreLocation
 
-class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class WeatherViewController: UIViewController {
     
     // MARK: - Variables
     
     var degrees = "°"
     
+    
     // MARK: - Outlets
     
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var backgroundImage: UIImageView!
-    @IBOutlet weak var cityName: UILabel!
-    @IBOutlet weak var weatherDescription: UILabel!
-    @IBOutlet weak var currentlyWeather: UILabel!
+    @IBOutlet weak var cityLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var temperatureLabel: UILabel!
+    @IBOutlet weak var currentDayLabel: UILabel!
+    @IBOutlet weak var dayTemperatureLabel: UILabel!
+    @IBOutlet weak var nightTemperatureLabel: UILabel!
+    @IBOutlet weak var todayDescriptionLabel: UILabel!
     
+    @IBOutlet weak var dailyWeatherTableView: DailyWeatherTableView!
+    @IBOutlet weak var hourlyWeatherCollectionView: HourlyWeatherCollectionView!
         
     // MARK: - Properties
     
     var weather: Weather?
     var city: String?
-    var daily: [Daily] = []
     
         
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        tableView.delegate = self
-        tableView.dataSource = self
         
         LocationManager.shared.start { (currentLocation, city) in
             let longitude = currentLocation.coordinate.longitude
@@ -48,7 +49,6 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
             latitude: latitude,
             okHandler: { [weak self] model in
                 self?.weather = model
-                self?.daily = model.daily
                 DispatchQueue.main.async {
                     self?.updateUI()
                 }
@@ -71,59 +71,31 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     private func updateUI() {
-        self.weatherDescription.text = self.weather?.current.weather[0].description
-        cityName.text = self.city
+        descriptionLabel.text = weather?.current.weather[0].description
+        cityLabel.text = city
         
-        if let temp = self.weather?.current.temp {
-            currentlyWeather.text = String(Int(temp)) + degrees
-        }
-        self.tableView.reloadData()
-    }
-    
-    // MARK: - TableView
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return daily.count + 2
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "CurrentCell", for: indexPath) as! CurrentCell
-            if let nightTemperature = self.weather?.daily[0].temp.night, let dayTemperature = self.weather?.daily[0].temp.day, let currentDay = weather?.daily[0].dt  {
-                cell.nightTemperature.text = String(Int(nightTemperature))
-                cell.dayTemperature.text = String(Int(dayTemperature))
-                cell.day.text = currentDay.dayOfWeek()
-                return cell
-            }
-        } else if indexPath.row == 1 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "HourlyWeatherCell", for: indexPath) as! HourlyWeatherCell
-            if let hourlyWeather =  weather?.hourly {
-                cell.hourlyWeatherData = hourlyWeather
-                cell.hourlyWeatherCollectionView.reloadData()
-            }
-            return cell
-            
-        } else if (2...9).contains(indexPath.row) {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "DailyCell", for: indexPath) as! DailyCell
-            cell.dayTemp.text = String(Int(daily[indexPath.row - 2].temp.day))
-            cell.nightTemp.text = String(Int(daily[indexPath.row - 2].temp.night))
-            cell.today.text = daily[indexPath.row - 2].dt.dayOfWeek()
-            cell.dailyIcon.image = UIImage(named: daily[indexPath.row - 2].weather[0].icon)
-            return cell
-            
+        if let temp = weather?.current.temp {
+            temperatureLabel.text = String(Int(temp)) + degrees
         }
         
-        return UITableViewCell()
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        var height : CGFloat
-        if indexPath.row == 1 {
-            height = 120.0
-        } else{
-            height = 50.0
+        if let hourlyWeather = weather?.hourly {
+            hourlyWeatherCollectionView.hourlyWeatherData = hourlyWeather
+            hourlyWeatherCollectionView.reloadData()
         }
-        return height
+        
+        if let dailyWeather = weather?.daily {
+            dailyWeatherTableView.dailyWeatherData = dailyWeather
+            dailyWeatherTableView.reloadData()
+        }
+        
+        if let nightTemperature = self.weather?.daily[0].temp.night, let dayTemperature = self.weather?.daily[0].temp.day, let currentDay = weather?.daily[0].dt {
+            dayTemperatureLabel.text = String(Int(dayTemperature))
+            nightTemperatureLabel.text = String(Int(nightTemperature))
+            currentDayLabel.text = currentDay.dayOfWeek()
+        }
+        
+        if let currentTemp = weather?.current.temp, let maxTemp = weather?.daily[0].temp.max, let description = weather?.daily[0].weather[0].description {
+            todayDescriptionLabel.text = "Today: \(description). It's \(Int(currentTemp))\(degrees); the high will be \(Int(maxTemp)) \(degrees)."
+        }
     }
 }
-

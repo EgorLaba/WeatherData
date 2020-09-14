@@ -1,7 +1,7 @@
 
 import UIKit
 
-class HourlyDetailCollectionCell: UICollectionViewCell {
+class HourlyWeatherCell: UICollectionViewCell {
     
     // MARK: - Outlets
     

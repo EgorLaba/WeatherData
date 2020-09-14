@@ -9,5 +9,10 @@ class DailyWeatherCell: UITableViewCell {
     @IBOutlet weak var dayTempLabel: UILabel!
     @IBOutlet weak var nightTempLabel: UILabel!
     @IBOutlet weak var dailyIconImage: UIImageView!
+    
+    // MARK: - Lifecycle
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+    }
 }
-

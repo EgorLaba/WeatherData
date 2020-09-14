@@ -8,4 +8,10 @@ class HourlyWeatherCell: UICollectionViewCell {
     @IBOutlet weak var hour: UILabel!
     @IBOutlet weak var hourlyIcon: UIImageView!
     @IBOutlet weak var weatherTemp: UILabel!
+    
+    // MARK: - Lifecycle
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+    }
 }

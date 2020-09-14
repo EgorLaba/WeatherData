@@ -21,6 +21,7 @@ class WeatherViewController: UIViewController {
     
     @IBOutlet weak var dailyWeatherTableView: DailyWeatherTableView!
     @IBOutlet weak var hourlyWeatherCollectionView: HourlyWeatherCollectionView!
+    @IBOutlet weak var currentlyWeatherTableView: CurrentlyWeatherTableView!
         
     // MARK: - Properties
     
@@ -96,6 +97,12 @@ class WeatherViewController: UIViewController {
         
         if let currentTemp = weather?.current.temp, let maxTemp = weather?.daily[0].temp.max, let description = weather?.daily[0].weather[0].description {
             todayDescriptionLabel.text = "Today: \(description). It's \(Int(currentTemp))\(degrees); the high will be \(Int(maxTemp)) \(degrees)."
+        }
+        
+        if let currentlyWeather = weather?.current {
+            currentlyWeatherTableView.currentlyWeatherData = currentlyWeather
+            currentlyWeatherTableView.reloadData()
+            
         }
     }
 }

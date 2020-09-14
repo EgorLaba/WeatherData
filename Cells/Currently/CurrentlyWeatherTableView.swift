@@ -61,7 +61,7 @@ class CurrentlyWeatherTableView: UITableView, UITableViewDataSource, UITableView
             cell.descriptionLabel.text = "WIND"
             if let windSpeed = currentlyWeatherData?.wind_speed, let windDeg = currentlyWeatherData?.wind_deg {
                 let windDirection = Utils.getWindDirection(windDeg)
-                cell.dataLabel.text = ("\(windDirection) \(windSpeed) km/h")
+                cell.dataLabel.text = ("\(windDirection) \(Int(windSpeed)) km/h")
             }
         case .fellsLike:
             cell.descriptionLabel.text = "FEELS LIKE"

@@ -35,6 +35,7 @@ class Networking {
                         decoder.userInfo[CodingUserInfoKey.context!] = CoreDataManager.sharedInstance.managedObjectContext
                         decoder.dateDecodingStrategy = .secondsSince1970
                         
+                        CoreDataManager.sharedInstance.deleteAllWeather()
                         let _ = try decoder.decode(Weather.self, from: data)
                         CoreDataManager.sharedInstance.saveContext()
                         

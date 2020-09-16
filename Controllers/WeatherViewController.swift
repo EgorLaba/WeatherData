@@ -49,7 +49,6 @@ class WeatherViewController: UIViewController {
     
     // MARK: - Private
     
-    
     private func loadWeather(_ longitude: Double, _ latitude: Double) {
         Networking.shared.getCurrentWeather(
             longitude: longitude,
@@ -80,7 +79,7 @@ class WeatherViewController: UIViewController {
         guard let weather = CoreDataManager.sharedInstance.getWeather() else { return }
         
         cityLabel.text = city
-        descriptionLabel.text = (weather.current.weather.allObjects.first as? Weather)?.description
+        descriptionLabel.text = (weather.current.weather.allObjects.first as? WeatherDescription)?.info
         
         temperatureLabel.text = String(Int(weather.current.temp)) + degrees
         

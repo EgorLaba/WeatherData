@@ -60,11 +60,19 @@ class CoreDataManager {
         }
     }
     
-    
     // MARK: - Public func
     
     func getWeather() -> Weather? {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Weather")
         return try? managedObjectContext.fetch(fetchRequest).first as? Weather
     }
+    
+    func deleteAllWeather() {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Weather")
+        let weathers = try? managedObjectContext.fetch(fetchRequest) as? [Weather]
+        weathers?.forEach({ (weather) in
+            managedObjectContext.delete(weather)
+        })
+    }
 }
+

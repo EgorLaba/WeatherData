@@ -29,6 +29,7 @@ class HourlyWeatherCollectionView: UICollectionView, UICollectionViewDataSource,
         
         cell.hourlyIcon.image = nil
         if let iconHourly = (hourlyWeatherData[indexPath.row].weather.allObjects.first as? WeatherDescription)?.icon {
+            cell.hour.text = hourlyWeatherData[indexPath.row].dt.hourlyData()
             cell.hourlyIcon.image = UIImage(named: iconHourly)
         }
         return cell

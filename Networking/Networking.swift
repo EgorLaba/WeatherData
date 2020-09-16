@@ -1,6 +1,5 @@
 import Foundation
 
-
 struct URLPaths {
     static let fullWeather: String = "/onecall"
 }
@@ -24,7 +23,7 @@ class Networking {
     
     func getCurrentWeather(longitude: Double,
                            latitude: Double,
-                           okHandler: @escaping (Weather) -> Void,
+                           okHandler: @escaping () -> Void,
                            errorHandler: @escaping (Error) -> Void) {
         self.parameters["lon"] = String(longitude)
         self.parameters["lat"] = String(latitude)
@@ -33,9 +32,13 @@ class Networking {
                 if let data = data {
                     do {
                         let decoder = JSONDecoder()
+                        decoder.userInfo[CodingUserInfoKey.context!] = CoreDataManager.sharedInstance.managedObjectContext
                         decoder.dateDecodingStrategy = .secondsSince1970
-                        let response = try decoder.decode(Weather.self, from: data)
-                        okHandler(response)
+                        
+                        let _ = try decoder.decode(Weather.self, from: data)
+                        CoreDataManager.sharedInstance.saveContext()
+                        
+                        okHandler()
                     } catch {
                         errorHandler(error)
                     }

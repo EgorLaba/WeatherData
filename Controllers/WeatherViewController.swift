@@ -25,7 +25,6 @@ class WeatherViewController: UIViewController {
         
     // MARK: - Properties
     
-    var weather: Weather?
     var city: String?
     
         
@@ -33,23 +32,29 @@ class WeatherViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        updateUI()
         LocationManager.shared.start { (currentLocation, city) in
             let longitude = currentLocation.coordinate.longitude
             let latitude = currentLocation.coordinate.latitude
             self.city = city
             LocationManager.shared.stop()
-            
+
             self.loadWeather(longitude, latitude)
         }
     }
+    
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
+    // MARK: - Private
+    
     
     private func loadWeather(_ longitude: Double, _ latitude: Double) {
         Networking.shared.getCurrentWeather(
             longitude: longitude,
             latitude: latitude,
-            okHandler: { [weak self] model in
-                self?.weather = model
+            okHandler: { [weak self] in
                 DispatchQueue.main.async {
                     self?.updateUI()
                 }
@@ -72,37 +77,35 @@ class WeatherViewController: UIViewController {
     }
     
     private func updateUI() {
-        descriptionLabel.text = weather?.current.weather[0].description
+        guard let weather = CoreDataManager.sharedInstance.getWeather() else { return }
+        
         cityLabel.text = city
+        descriptionLabel.text = (weather.current.weather.allObjects.first as? Weather)?.description
         
-        if let temp = weather?.current.temp {
-            temperatureLabel.text = String(Int(temp)) + degrees
-        }
+        temperatureLabel.text = String(Int(weather.current.temp)) + degrees
         
-        if let hourlyWeather = weather?.hourly {
+        if let hourlyWeather = (weather.hourly as? Set<WeatherParams>)?.sorted(by: { $0.dt < $1.dt }) {
             hourlyWeatherCollectionView.hourlyWeatherData = hourlyWeather
             hourlyWeatherCollectionView.reloadData()
         }
         
-        if let dailyWeather = weather?.daily {
+        if let dailyWeather = (weather.daily as? Set<Daily>)?.sorted(by: { $0.dt < $1.dt }) {
             dailyWeatherTableView.dailyWeatherData = dailyWeather
             dailyWeatherTableView.reloadData()
         }
         
-        if let nightTemperature = self.weather?.daily[0].temp.night, let dayTemperature = self.weather?.daily[0].temp.day, let currentDay = weather?.daily[0].dt {
-            dayTemperatureLabel.text = String(Int(dayTemperature))
-            nightTemperatureLabel.text = String(Int(nightTemperature))
-            currentDayLabel.text = currentDay.dayOfWeek()
+        if let dailyWeather = (weather.daily as? Set<Daily>)?.sorted(by: { $0.dt < $1.dt }).first {
+            dayTemperatureLabel.text = String(Int(dailyWeather.temp.day))
+            nightTemperatureLabel.text = String(Int(dailyWeather.temp.night))
         }
         
-        if let currentTemp = weather?.current.temp, let maxTemp = weather?.daily[0].temp.max, let description = weather?.daily[0].weather[0].description {
-            todayDescriptionLabel.text = "Today: \(description). It's \(Int(currentTemp))\(degrees); the high will be \(Int(maxTemp)) \(degrees)."
+        currentDayLabel.text = weather.current.dt.dayOfWeek()
+        
+        if let info = (weather.current.weather.allObjects.first as? WeatherDescription)?.info {
+            todayDescriptionLabel.text = "Today: \(info). It's \(Int(weather.current.temp))\(degrees)"
         }
         
-        if let currentlyWeather = weather?.current {
-            currentlyWeatherTableView.currentlyWeatherData = currentlyWeather
-            currentlyWeatherTableView.reloadData()
-            
-        }
+        currentlyWeatherTableView.currentlyWeatherData = weather.current
+        currentlyWeatherTableView.reloadData()
     }
 }

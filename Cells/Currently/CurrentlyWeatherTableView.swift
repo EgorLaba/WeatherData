@@ -7,6 +7,7 @@ enum Rows: Int, CaseIterable {
     case sunrise
     case sunset
     case humidity
+    case visibility
     case wind
     case fellsLike
     case pressure
@@ -57,15 +58,20 @@ class CurrentlyWeatherTableView: UITableView, UITableViewDataSource, UITableView
             if let humidity = currentlyWeatherData?.humidity {
                 cell.dataLabel.text = String(humidity) + percent
             }
+        case .visibility:
+            cell.descriptionLabel.text = "VISIBILITY"
+            if let visibility = currentlyWeatherData?.visibility {
+                cell.dataLabel.text = String(visibility)
+            }
         case .wind:
             cell.descriptionLabel.text = "WIND"
-            if let windSpeed = currentlyWeatherData?.wind_speed, let windDeg = currentlyWeatherData?.wind_deg {
-                let windDirection = Utils.getWindDirection(windDeg)
+            if let windSpeed = currentlyWeatherData?.windSpeed, let windDeg = currentlyWeatherData?.windDeg {
+                let windDirection = Direction.getWindDirection(windDeg)
                 cell.dataLabel.text = ("\(windDirection) \(Int(windSpeed)) km/h")
             }
         case .fellsLike:
             cell.descriptionLabel.text = "FEELS LIKE"
-            if let feelsLike = currentlyWeatherData?.feels_like {
+            if let feelsLike = currentlyWeatherData?.feelsLike {
                 cell.dataLabel.text = String(Int(feelsLike)) + degrees
             }
         case .pressure:

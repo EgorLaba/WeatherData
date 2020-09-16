@@ -26,7 +26,10 @@ class DailyWeatherTableView: UITableView, UITableViewDelegate, UITableViewDataSo
         cell.dayLabel.text = dailyWeatherData[indexPath.row].dt.dayOfWeek()
         cell.dayTempLabel.text = String(Int(dailyWeather.day))
         cell.nightTempLabel.text = String(Int(dailyWeather.night))
-        cell.dailyIconImage.image = UIImage(named: dailyWeatherData[indexPath.row].weather[0].icon)
+        cell.dailyIconImage.image = nil
+        if let dailyIcon = (dailyWeatherData[indexPath.row].weather.allObjects.first as? WeatherDescription)?.icon {
+            cell.dailyIconImage.image = UIImage(named: dailyIcon)
+        }
         return cell
     }
 }

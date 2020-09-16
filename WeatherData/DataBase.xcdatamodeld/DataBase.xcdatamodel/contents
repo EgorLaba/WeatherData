@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15702" systemVersion="18G4032" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Daily" representedClassName="Daily" syncable="YES">
+        <attribute name="dt" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="sunrise" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="sunset" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="temp" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Temp"/>
+        <relationship name="weather" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WeatherDescription"/>
+    </entity>
+    <entity name="Temp" representedClassName="Temp" syncable="YES">
+        <attribute name="day" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="max" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="night" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="Weather" representedClassName="Weather" syncable="YES">
+        <relationship name="current" maxCount="1" deletionRule="Cascade" destinationEntity="WeatherParams"/>
+        <relationship name="daily" toMany="YES" deletionRule="Cascade" destinationEntity="Daily"/>
+        <relationship name="hourly" toMany="YES" deletionRule="Cascade" destinationEntity="WeatherParams"/>
+    </entity>
+    <entity name="WeatherDescription" representedClassName="WeatherDescription" syncable="YES">
+        <attribute name="icon" attributeType="String"/>
+        <attribute name="id" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="info" attributeType="String"/>
+        <attribute name="main" attributeType="String"/>
+    </entity>
+    <entity name="WeatherParams" representedClassName="WeatherParams" syncable="YES">
+        <attribute name="dt" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="feelsLike" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="humidity" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="pressure" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="sunrise" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="sunset" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="temp" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="visibility" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="windDeg" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="windSpeed" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="weather" toMany="YES" deletionRule="Cascade" destinationEntity="WeatherDescription"/>
+    </entity>
+    <elements>
+        <element name="Daily" positionX="-77.640625" positionY="71.61328125" width="128" height="118"/>
+        <element name="Temp" positionX="-248.36328125" positionY="200.70703125" width="128" height="88"/>
+        <element name="WeatherDescription" positionX="-246.734375" positionY="76.3671875" width="128" height="103"/>
+        <element name="Weather" positionX="-253.1875" positionY="-81.7734375" width="128" height="88"/>
+        <element name="WeatherParams" positionX="-432.8125" positionY="25.8203125" width="128" height="208"/>
+    </elements>
+</model>
